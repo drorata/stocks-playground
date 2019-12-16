@@ -11,8 +11,8 @@ yf.pdr_override()  # <== that's all it takes :-)
 by Dror Atariah ([LinkedIn](https://www.linkedin.com/in/atariah/) / [GitHub](https://github.com/drorata))
 """
 
-start_date = st.text_input("Start date:", "2018-10-10")
-end_date = st.text_input("End date:", "2019-10-10")
+start_date = st.text_input("Start date (YYYY-MM-DD):", "2018-10-10")
+end_date = st.text_input("End date (YYYY-MM-DD):", "2019-10-10")
 tickers = st.text_input("Ticker(s), separated by commas:", "C001.DE, FB2A.DE")
 tickers = [x.strip() for x in tickers.split(",")]
 
