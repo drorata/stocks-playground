@@ -2,7 +2,7 @@ name: stocks-playground
 channels:
   - conda-forge
 dependencies:
-  - python=3.8
+  - python=3.8.0
   - jupyter
   - nb_conda
   - pip
