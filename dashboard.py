@@ -1,3 +1,5 @@
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 import streamlit as st
 import pandas as pd
 import yfinance as yf
@@ -11,8 +13,13 @@ yf.pdr_override()  # <== that's all it takes :-)
 by Dror Atariah ([LinkedIn](https://www.linkedin.com/in/atariah/) / [GitHub](https://github.com/drorata))
 """
 
-start_date = st.text_input("Start date (YYYY-MM-DD):", "2018-10-10")
-end_date = st.text_input("End date (YYYY-MM-DD):", "2019-10-10")
+start_date = st.text_input(
+    "Start date (YYYY-MM-DD):",
+    (datetime.now() - relativedelta(years=2)).strftime("%Y-%m-%d"),
+)
+end_date = st.text_input(
+    "End date (YYYY-MM-DD):", datetime.now().strftime("%Y-%m-%d")
+)
 tickers = st.text_input("Ticker(s), separated by commas:", "C001.DE, FB2A.DE")
 tickers = [x.strip() for x in tickers.split(",")]
 
@@ -47,12 +54,14 @@ st.line_chart(df)
 info = []
 for ticker in tickers:
     t_info = yf.Ticker(ticker).info
-    info.append({
-        "Symbol": ticker,
-        "Name": t_info["longName"],
-        "Type": t_info["quoteType"],
-        "Biz": t_info["longBusinessSummary"]
-    })
+    info.append(
+        {
+            "Symbol": ticker,
+            "Name": t_info["longName"],
+            "Type": t_info["quoteType"],
+            "Biz": t_info["longBusinessSummary"],
+        }
+    )
 
 info_df = pd.DataFrame(info)
 info_df
