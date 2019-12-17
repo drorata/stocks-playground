@@ -41,4 +41,23 @@ df = pd.DataFrame(res).transpose()
 df.index.name = "index"
 st.line_chart(df)
 
+"""
+## Legend
+"""
+info = []
+for ticker in tickers:
+    t_info = yf.Ticker(ticker).info
+    info.append({
+        "Symbol": ticker,
+        "Name": t_info["longName"],
+        "Type": t_info["quoteType"],
+        "Biz": t_info["longBusinessSummary"]
+    })
+
+info_df = pd.DataFrame(info)
+info_df
+
+"""
+## Data behind the plot
+"""
 df
