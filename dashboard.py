@@ -11,7 +11,7 @@ yf.pdr_override()  # <== that's all it takes :-)
 """
 # Tickers Tracking
 
-by Dror Atariah ([LinkedIn](https://www.linkedin.com/in/atariah/) / [GitHub](https://github.com/drorata))
+by Dror Atariah ([LinkedIn](https://www.linkedin.com/in/atariah/) / [GitHub](https://github.com/drorata/stocks-playground))
 """
 
 start_date = st.text_input(
