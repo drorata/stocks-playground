@@ -1,8 +1,9 @@
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
-import streamlit as st
+
 import pandas as pd
+import streamlit as st
 import yfinance as yf
+from dateutil.relativedelta import relativedelta
 from pandas_datareader import data as pdr
 
 yf.pdr_override()  # <== that's all it takes :-)
@@ -17,9 +18,7 @@ start_date = st.text_input(
     "Start date (YYYY-MM-DD):",
     (datetime.now() - relativedelta(years=2)).strftime("%Y-%m-%d"),
 )
-end_date = st.text_input(
-    "End date (YYYY-MM-DD):", datetime.now().strftime("%Y-%m-%d")
-)
+end_date = st.text_input("End date (YYYY-MM-DD):", datetime.now().strftime("%Y-%m-%d"))
 tickers = st.text_input("Ticker(s), separated by commas:", "C001.DE, FB2A.DE")
 tickers = [x.strip() for x in tickers.split(",")]
 
