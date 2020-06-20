@@ -20,7 +20,7 @@ by Dror Atariah ([LinkedIn](https://www.linkedin.com/in/atariah/) / [GitHub](htt
 
 
 @st.cache()
-def load_data(start_date, end_date):
+def load_data(start_date, end_date, tickers):
     return {
         ticker: pdr.get_data_yahoo(ticker, start=start_date, end=end_date)[
             ["Open", "Close", "High", "Low"]
@@ -37,7 +37,7 @@ end_date = st.text_input("End date (YYYY-MM-DD):", datetime.now().strftime("%Y-%
 tickers = st.text_input("Ticker(s), separated by commas:", "AAPL, AMZN, GOOGL")
 tickers = [x.strip() for x in tickers.split(",")]
 
-tickers_data = load_data(start_date, end_date)
+tickers_data = load_data(start_date, end_date, tickers)
 
 changes = {
     ticker: 100
