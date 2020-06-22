@@ -57,8 +57,8 @@ for key in tickers_data.keys():
     data = changes[key]["Open"]
     data.name = key
     res.append(data)
-roll_avg = st.radio("Averaging", ["Day", "7 days", "30 days"])
 roll_avg_map = {"Day": "1d", "7 days": "7d", "30 days": "30d"}
+roll_avg = st.radio("Averaging", list(roll_avg_map.keys()))
 df = pd.DataFrame(res).transpose().rolling(roll_avg_map[roll_avg]).mean().reset_index()
 
 st.plotly_chart(
