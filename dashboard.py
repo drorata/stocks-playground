@@ -36,7 +36,13 @@ end_date = st.text_input("End date (YYYY-MM-DD):", datetime.now().strftime("%Y-%
 tickers = st.text_input("Ticker(s), separated by commas:", "AAPL, AMZN, GOOGL")
 tickers = [x.strip() for x in tickers.split(",")]
 
-tickers_data = load_data(start_date, end_date, tickers)
+raw_tickers_data = load_data(start_date, end_date, tickers)
+roll_avg_map = {"1 day": "1d", "7 days": "7d", "30 days": "30d"}
+roll_avg = st.radio("Average rolling window of", list(roll_avg_map.keys()))
+tickers_data = {
+    ticker: raw_tickers_data[ticker].rolling(roll_avg_map[roll_avg]).mean()
+    for ticker in tickers
+}
 
 changes = {
     ticker: 100
@@ -57,9 +63,7 @@ for key in tickers_data.keys():
     data = changes[key]["Open"]
     data.name = key
     res.append(data)
-roll_avg_map = {"Day": "1d", "7 days": "7d", "30 days": "30d"}
-roll_avg = st.radio("Averaging", list(roll_avg_map.keys()))
-df = pd.DataFrame(res).transpose().rolling(roll_avg_map[roll_avg]).mean().reset_index()
+df = pd.DataFrame(res).transpose().reset_index()
 
 st.plotly_chart(
     px.line(df, x="Date", y=tickers).update_layout(
