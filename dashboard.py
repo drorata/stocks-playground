@@ -1,14 +1,12 @@
 from datetime import datetime
 
-import holoviews as hv
 import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
 import streamlit as st
 import yfinance as yf
 from dateutil.relativedelta import relativedelta
 from pandas_datareader import data as pdr
-
-hv.extension("bokeh")
-
 
 yf.pdr_override()  # <== that's all it takes :-)
 
@@ -19,12 +17,13 @@ by Dror Atariah ([LinkedIn](https://www.linkedin.com/in/atariah/) / [GitHub](htt
 """
 
 
+metrics = ["Open", "Close", "High", "Low"]
+
+
 @st.cache()
 def load_data(start_date, end_date, tickers):
     return {
-        ticker: pdr.get_data_yahoo(ticker, start=start_date, end=end_date)[
-            ["Open", "Close", "High", "Low"]
-        ]
+        ticker: pdr.get_data_yahoo(ticker, start=start_date, end=end_date)[metrics]
         for ticker in tickers
     }
 
@@ -60,18 +59,28 @@ for key in tickers_data.keys():
     res.append(data)
 
 df = pd.DataFrame(res).transpose().reset_index()
-plt = hv.render(
-    hv.Overlay(
-        [
-            hv.Curve(df, "Date", ticker, label=ticker).opts(
-                width=700, height=300, tools=["hover"]
-            )
-            for ticker in tickers
-        ]
-    ).opts(legend_position="top_left"),
+st.plotly_chart(
+    px.line(df, x="Date", y=tickers).update_layout(
+        yaxis_title="% change", legend_title_text="Ticker"
+    )
 )
-plt.yaxis.axis_label = "%"
-st.bokeh_chart(plt)
 
 if st.checkbox("Show data"):
     st.write(df.set_index("Date"))
+
+st.write("## Ticker behavior")
+ticker = st.selectbox("Select ticker", tickers)
+df = tickers_data[ticker].reset_index()
+
+fig = go.Figure(
+    data=[
+        go.Candlestick(
+            x=df["Date"],
+            open=df["Open"],
+            high=df["High"],
+            low=df["Low"],
+            close=df["Close"],
+        )
+    ]
+)
+st.plotly_chart(fig)
