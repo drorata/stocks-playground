@@ -28,21 +28,47 @@ def load_data(start_date, end_date, tickers):
     }
 
 
-start_date = st.text_input(
+start_date = st.sidebar.text_input(
     "Start date (YYYY-MM-DD):",
     (datetime.now() - relativedelta(years=2)).strftime("%Y-%m-%d"),
 )
-end_date = st.text_input("End date (YYYY-MM-DD):", datetime.now().strftime("%Y-%m-%d"))
-tickers = st.text_input("Ticker(s), separated by commas:", "AAPL, AMZN, GOOGL")
+end_date = st.sidebar.text_input(
+    "End date (YYYY-MM-DD):", datetime.now().strftime("%Y-%m-%d")
+)
+tickers = st.sidebar.text_input("Ticker(s), separated by commas:", "AAPL, AMZN, GOOGL")
+if len(tickers) == 0:
+    st.error("You must specify at least one ticker")
+    raise st.ScriptRunner.StopException
 tickers = [x.strip() for x in tickers.split(",")]
 
 raw_tickers_data = load_data(start_date, end_date, tickers)
-roll_avg_map = {"1 day": "1d", "7 days": "7d", "30 days": "30d"}
-roll_avg = st.radio("Average rolling window of", list(roll_avg_map.keys()))
-tickers_data = {
-    ticker: raw_tickers_data[ticker].rolling(roll_avg_map[roll_avg]).mean()
-    for ticker in tickers
-}
+for ticker in tickers:
+    if raw_tickers_data[ticker].empty:
+        st.error(f"No data found for the ticker '{ticker}'")
+        raise st.ScriptRunner.StopException
+
+roll_types = ["Normal", "Exponential"]
+roll_type = st.sidebar.radio("Averaging type", roll_types)
+
+roll_avg_map = {"1 day": "1d", "7 days": "7d", "30 days": "30d", "120 days": "120d"}
+roll_avg = st.sidebar.radio("Average rolling window of", list(roll_avg_map.keys()))
+
+if roll_type not in roll_types:
+    st.error("Something went wrong with the rolling type. Exiting")
+    raise st.ScriptRunner.StopException
+
+if roll_type == "Normal":
+    tickers_data = {
+        ticker: raw_tickers_data[ticker].rolling(roll_avg_map[roll_avg]).mean()
+        for ticker in tickers
+    }
+if roll_type == "Exponential":
+    tickers_data = {
+        ticker: raw_tickers_data[ticker]
+        .ewm(span=int(roll_avg_map[roll_avg][:-1]))
+        .mean()
+        for ticker in tickers
+    }
 
 changes = {
     ticker: 100
