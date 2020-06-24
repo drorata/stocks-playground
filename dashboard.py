@@ -116,3 +116,14 @@ fig = go.Figure(
     ]
 )
 st.plotly_chart(fig)
+
+value_type = st.selectbox("Select value", ["Open", "High", "Low", "Close"])
+df = pd.concat(
+    [tickers_data[ticker][value_type], raw_tickers_data[ticker][value_type]], axis=1
+)
+df.columns = ["Averaged", "Raw"]
+df.reset_index(inplace=True)
+fig = px.line(df, x="Date", y=["Averaged", "Raw"]).update_layout(
+    yaxis_title=f"'{value_type}' value"
+)
+st.plotly_chart(fig)
