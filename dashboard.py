@@ -28,13 +28,11 @@ def load_data(start_date, end_date, tickers):
     }
 
 
-start_date = st.sidebar.text_input(
-    "Start date (YYYY-MM-DD):",
-    (datetime.now() - relativedelta(years=2)).strftime("%Y-%m-%d"),
+start_date = st.sidebar.date_input(
+    "Start date:",
+    (datetime.now() - relativedelta(years=2)),
 )
-end_date = st.sidebar.text_input(
-    "End date (YYYY-MM-DD):", datetime.now().strftime("%Y-%m-%d")
-)
+end_date = st.sidebar.date_input("End date:", datetime.now())
 tickers = st.sidebar.text_input("Ticker(s), separated by commas:", "AAPL, AMZN, GOOGL")
 if len(tickers) == 0:
     st.error("You must specify at least one ticker")
