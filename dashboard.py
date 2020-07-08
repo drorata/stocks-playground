@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from typing import List
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -21,7 +21,7 @@ metrics = ["Open", "Close", "High", "Low"]
 
 
 @st.cache()
-def load_data(start_date, end_date, tickers):
+def load_data(start_date: datetime, end_date: datetime, tickers: List[str]):
     return {
         ticker: pdr.get_data_yahoo(ticker, start=start_date, end=end_date)[metrics]
         for ticker in tickers
@@ -29,8 +29,7 @@ def load_data(start_date, end_date, tickers):
 
 
 start_date = st.sidebar.date_input(
-    "Start date:",
-    (datetime.now() - relativedelta(years=2)),
+    "Start date:", (datetime.now() - relativedelta(years=2)),
 )
 end_date = st.sidebar.date_input("End date:", datetime.now())
 tickers = st.sidebar.text_input("Ticker(s), separated by commas:", "AAPL, AMZN, GOOGL")
