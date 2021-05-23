@@ -7,3 +7,6 @@ dependencies:
   - nb_conda
   - pip
   - jupyter_contrib_nbextensions
+  - pip
+  - pip:
+    - -r file:requirements.txt
