@@ -1,5 +1,7 @@
 # Stocks Playground
 
+Check out the deployed app here: [salty-harbor-10851](https://salty-harbor-10851.herokuapp.com/). Feedback is welcomed!
+
 ## Motivation
 
 The initial motivation of this dashboard was to compare the value changes of financial assets.
