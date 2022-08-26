@@ -1,0 +1,12 @@
+# https://taskfile.dev
+
+version: "3"
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  run-docker:
+    cmds:
+      - docker run -it --rm -p 8501:8501 stocks-playground
+    silent: true
