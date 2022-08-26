@@ -10,12 +10,16 @@ from pandas_datareader import data as pdr
 
 yf.pdr_override()  # <== that's all it takes :-)
 
-"""
+st.write(
+    """
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 # Tickers Tracking
 
-by Dror Atariah ([LinkedIn](https://www.linkedin.com/in/atariah/) / [GitHub](https://github.com/drorata/stocks-playground))
-"""
-
+by Dror Atariah ([<i class="fab fa-linkedin"></i>](https://www.linkedin.com/in/atariah/) [<i class="fab fa-github"></i>](https://github.com/drorata/stocks-playground))
+""",
+    unsafe_allow_html=True,
+)
 
 metrics = ["Open", "Close", "High", "Low"]
 
@@ -29,7 +33,8 @@ def load_data(start_date: datetime, end_date: datetime, tickers: List[str]):
 
 
 start_date = st.sidebar.date_input(
-    "Start date:", (datetime.now() - relativedelta(years=2)),
+    "Start date:",
+    (datetime.now() - relativedelta(years=2)),
 )
 end_date = st.sidebar.date_input("End date:", datetime.now())
 tickers = st.sidebar.text_input("Ticker(s), separated by commas:", "AAPL, AMZN, GOOGL")
