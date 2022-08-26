@@ -16,7 +16,8 @@ st.write(
 
 # Tickers Tracking
 
-by Dror Atariah ([<i class="fab fa-linkedin"></i>](https://www.linkedin.com/in/atariah/) [<i class="fab fa-github"></i>](https://github.com/drorata/stocks-playground))
+by Dror Atariah ([<i class="fab fa-linkedin"></i>](https://www.linkedin.com/in/atariah/)
+[<i class="fab fa-github"></i>](https://github.com/drorata/stocks-playground))
 """,
     unsafe_allow_html=True,
 )
