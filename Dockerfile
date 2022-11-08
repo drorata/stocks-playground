@@ -8,8 +8,9 @@ RUN python -m pip install --upgrade pip \
 
 COPY ./pyproject.toml .
 COPY ./poetry.lock .
+COPY stocks_playground/dashboard.py ./stocks_playground/dashboard.py
+COPY README.md .
+RUN /root/.local/bin/poetry config virtualenvs.in-project true \
+    && /root/.local/bin/poetry install
 
-RUN /root/.local/bin/poetry install --no-root
-
-COPY dashboard.py .
-ENTRYPOINT /usr/local/bin/streamlit run dashboard.py
+ENTRYPOINT .venv/bin/streamlit run stocks_playground/dashboard.py
