@@ -1,6 +1,6 @@
 # Stocks Playground
 
-Check out the deployed app here: [salty-harbor-10851](https://salty-harbor-10851.herokuapp.com/). Feedback is welcomed!
+Check out the deployed app here: [drorata-stocks-playground.streamlit.app](https://drorata-stocks-playground.streamlit.app/). Feedback is welcomed!
 
 ## Motivation
 
